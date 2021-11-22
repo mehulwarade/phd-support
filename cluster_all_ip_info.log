@@ -1,0 +1,22 @@
+broadcast: 192.168.50.255
+DNS: 192.168.50.1
+Gateway/ Router: 192.168.50.1
+
+DHCP Range: 192.168.50.200 - 220 && 192.168.50.100 - 120
+
+Number      Hostname        IP                  MAC                      Description                         
+
+1           boot            192.168.50.200      b8:27:eb:bf:e6:00        main rpi with netboot and nfs files
+                            192.168.50.4        b8-27-eb-bf-e6-00        (tftpboot folder)            
+                            192.168.0.13 (wlan0)
+
+2           Master(client)  192.168.50.220      b8:27:eb:d1:40:83        Master node which controls other slave nodes
+                            192.168.50.201      b8-27-eb-d1-40-83
+
+3           slave1(client)  192.168.50.210      b8:27:eb:07:8e:98        Slave1
+                            192.168.50.201      b8-27-eb-07-8e-98
+
+4           slave2(client)  192.168.50.211      b8:27:eb:5a:2b:32        Slave2
+                            192.168.50.201      b8-27-eb-5a-2b-32
+
+

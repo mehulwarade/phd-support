@@ -1,0 +1,76 @@
+;SUMMER RESEARCH INTERNSHIP
+
+1 mehul@minty 192.168.1.4 
+                b4:6b:fc:8f:14:39
+                b4-6b-fc-8f-14-39
+
+2 boot 192.168.1.50
+                b8:27:eb:bf:e6:00
+                b8-27-eb-bf-e6-00
+
+3 node under boot 192.168.1.150
+                b8:27:eb:d1:40:83 
+                b8-27-eb-d1-40-83
+
+4 node1 192.168.1.151
+                b8:27:eb:07:8e:98
+                b8-27-eb-07-8e-98
+
+5 node2 192.168.1.152
+                b8:27:eb:5a:2b:32
+                b8-27-eb-5a-2b-32
+
+5 node3 192.168.1.153
+                b8:27:eb:c2:08:d2
+                b8-27-eb-c2-08-d2
+
+6 node4 192.168.1.154
+                b8:27:eb:1e:6e:89
+                b8-27-eb-1e-6e-89
+
+7 node5 192.168.1.155
+                b8:27:eb:bb:8b:78
+                b8-27-eb-bb-8b-78
+
+8 node6 192.168.1.156
+                b8:27:eb:df:62:3e
+                b8-27-eb-df-62-3e
+                
+
+mkdir -p /tftpboot/[MAC-ADDRESS] /nfs/node2
+sudo rsync -xa --progress /nfs/node1/ /nfs/node2/
+sudo cp -r /tftpboot/MAC-ADDRESS /tftpboot/MAC-ADDRESS-NEW 'sudo cp -r b8-27-eb-d1-40-83/ b8-27-eb-1e-6e-89/'
+edit the /tftpboot/MAC-ADDRESS-NEW/cmdline.txt
+sudo nano /etc/dnsmasq.conf
+sudo nano /etc/exports
+sudo nano /nfs/[NODE]/etc/fstab
+Change the hostname of each machine.
+
+
+#
+#/etc/dnsmasq.conf
+#
+
+port=0
+#dhcp-range=192.168.50.255,proxy
+dhcp-range=eth0, 192.168.1.100, 192.168.1.200, 24h
+
+#STATIC IP ADDRESS TO EACH UNIQUE MAC
+#b8:27:eb:d1:40:83
+dhcp-host=38:94:ED:A9:61:72,switch,192.168.1.99
+dhcp-host=b8:27:eb:d1:40:83,node1,192.168.1.150
+dhcp-host=b8:27:eb:07:8e:98,node2,192.168.1.151
+dhcp-host=b8:27:eb:5a:2b:32,node3,192.168.1.152
+dhcp-host=b8:27:eb:c2:08:d2,node4,192.168.1.153
+#dhcp-host=b8:27:eb:5a:2b:32,slave2,192.168.50.211
+
+#dhcp-script=/nfs/dnsmasq.conf.save.hosts.auto.sh
+
+
+log-dhcp
+enable-tftp
+tftp-root=/tftpboot
+tftp-unique-root=mac
+pxe-service=0,"Raspberry Pi Boot"
+
+

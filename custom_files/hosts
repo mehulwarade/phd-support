@@ -1,0 +1,15 @@
+#
+#/etc/hosts
+#
+127.0.0.1 localhost
+127.0.1.1 boot
+::1 localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+192.168.50.220 master
+192.168.50.210 slave1
+192.168.50.211 slave2
+192.168.50.212 slave3
+192.168.50.213 slave4
+192.168.50.214 slave5
+192.168.50.215 slave6

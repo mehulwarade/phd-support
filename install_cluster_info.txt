@@ -1,0 +1,31 @@
+Dietpi install
+SSH install
+
+Netnode
+1. Change password
+
+2. Add User pi : adduser pi
+
+3. Add pi to sudoers list: usermod -aG sudo yourusername
+
+4. Change hostname: cd /boot/dietpi/func/ => sudo ./change_hostname NewHostName
+
+5. Delete basic user dietpi: sudo userdel DietPi
+
+6. Static IP: sudo nano /etc/network/interfaces
+
+7. After rsync copy dietpi folder from /boot and /run
+
+8. When u mount and chroot check you have IP address there. It should be there. Copy boot/dietpi.txt file if needed. 
+
+9. Change the hostname and static IP address of the chorooted one using dietpi-config. Reboot exit umount mount chroot and check if the IP address is changed or not. If yes then you r all ready
+
+10. NOTE: if you rsync anytime other than start of clean image then purge all the un needed software by chroming into the client
+
+11. Change Dnsmasq.conf to give static ip and hostname to each client using DHCP-host
+
+12. Write a script to automatically add the hostname and IP address to /etc/hosts using dhcp-script in Dnsmasq.conf
+
+13. Created a hardline of /etc/hosts to nfs/etc/hosts so that it autoupdates (Don’t forget to copy /etc/hosts from boot to client nfs /etc/hosts else the master or slaves won’t know each other)
+
+Change user
