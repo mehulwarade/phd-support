@@ -221,6 +221,7 @@ Router Login:
                                         √ your router
 
         [WORKS] sudo route add -net default gw 192.168.5.1 netmask 0.0.0.0 dev eth0
+                sudo route add -net default gw 192.168.1.1 netmask 0.0.0.0 dev enx00249b6cf06b
 
         
 
