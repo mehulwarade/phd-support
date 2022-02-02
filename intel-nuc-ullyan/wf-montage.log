@@ -1,0 +1,130 @@
+#1# Installing Montage Dependencies:
+    sudo apt install python3-pip
+    pip3 install astropy
+
+#2# Montage binaries for both arm and x86
+
+#3# git clone https://github.com/pegasus-isi/montage-workflow-v3
+
+cd montage-workflow-v3/
+
+#4# Prepping the workflow for our use:
+    1. Copy the x86 binaries needed to generate workflow
+        sudo cp /home/mehul/shared_fs/montage/x86-montage-binaries/* /usr/bin/
+
+    2. Check if pegasus-environment variables are set. If not:
+        export PYTHONPATH=`pegasus-config --python`
+        export PERL5LIB=`pegasus-config --perl`
+        export CLASSPATH=`pegasus-config --classpath`
+
+    3. ./montage-workflow.py --center "56.7 24.0" --degrees 0.5 --band dss:DSS2B:blue --band dss:DSS2R:green --band dss:DSS2IR:red
+
+    4. Copy the arm binaries for montage
+        sudo cp /home/mehul/shared_fs/montage/arm-montage-binaries/* /usr/bin/
+
+    5. mkdir data/output
+
+    6. sudo chmod -R 777 data/
+
+    7. cd data
+
+    8. Generate the workflow. Need the arm binaries in the /usr/bin <- See step 4:
+        pegasus-plan --sites condorpool -O output montage-workflow.yml
+        OR
+        pegasus-plan --sites local -O output montage-workflow.yml
+
+    9. Workflow has been created:
+        cd [ROOT]~/shared_fs/montage/montage-workflow-v3/data/mehul/pegasus/montage/runXXXX/
+
+#5# Workflow prep to be compatible with our setup:
+***** All searches should result in 58 files found. (for 0.5 degree)
+    1. Editing the submit files:
+        VS Code Search. 
+            Only Include files (/home/mehul/shared_fs/montage/montage-workflow-v3/data/mehul/pegasus/montage/run0001/00):
+
+            Search: request_memory = 1 GB
+            Replace: Requirements = Memory >= 32 && Arch =="armv7l"
+
+            Search: ,/home/mehul/shared_fs/montage/montage-workflow-v3/data/mehul/pegasus/montage/run0001/pegasus-worker-5.0.1-x86_64_ubuntu_18.tar.gz
+            Replace:   (Just an empty space as we have to delete that)
+
+    2. remove /home/mehul/shared_fs/montage/montage-workflow-v3/data/mehul/pegasus/montage/run0001/pegasus-worker-5.0.1-x86_64_ubuntu_18.tar.gz
+
+    3. Editing the sh files:
+        3.1.1 Search:
+printf "\n##############[Pegasus Lite] Figuring out the worker package to use ##############\n"  1>&2
+# figure out the worker package to use
+pegasus_lite_worker_package
+
+pegasus_lite_section_start stage_in
+
+        3.1.2 Replace:
+#printf "\n##############[Pegasus Lite] Figuring out the worker package to use ##############\n"  1>&2
+## figure out the worker package to use
+#pegasus_lite_worker_package
+#
+#pegasus_lite_section_start stage_in
+
+        3.2 DON'T NEED TO COMMENT THE EXECUTABLES XBIT SECTION
+
+        3.3.1 Comment the integrity sh. Change to "resular expression" command and Search:
+# https://stackoverflow.com/a/43578165
+printf "\n##################### Checking file integrity for input files #####################\n"  1>&2
+pegasus-integrity --print-timings --verify=stdin 1>&2 << 'eof'
+(.+?)
+eof
+
+        3.3.2 Replace:
+#printf "\n##################### Checking file integrity for input files #####################\n"  1>&2
+#pegasus-integrity --print-timings --verify=stdin 1>&2 << 'eof'
+#$1
+#eof
+
+        3.4.1 Search:
+pegasus_lite_section_end stage_in
+set +e
+job_ec=0
+
+        3.4.2 Replace:
+#pegasus_lite_section_end stage_in
+#set +e
+#job_ec=0
+
+#6# prepping the nodes for workflow:
+
+[On NUC] sudo cp path_to_'pegasus_5.0.0-arm'_folder/pegasus-5.0.0/bin/pegasus-kickstart /nfs/nodeXX/usr/bin/
+[On NUC] sudo cp path_to_'arm-montage-binaries'/* /nfs/nodeXX/usr/bin
+[On NUC] sudo chmod -R 777 /nfs/nodeXX/var/lib/condor/execute
+
+#7# Execute the workflow:
+*** Keep the arm-montage-binaries in x86/usr/bin <- See #4# Step 4
+
+    cd [ROOT]~/shared_fs/montage/montage-workflow-v3/data/mehul/pegasus/montage/runXXXX/
+    pegasus-run .
+
+
+
+### Log:
+
+condor_q
+condor_q -analyze
+condor_q -better
+pegasus-remove .
+pegasus_status -w 1
+
+
+
+
++++++++++++++++++++++++++++
+
+so few things that i noticed:
+
+the wf-scratch folder is populated using the /usr/bin files
+and the files from wf-scratch folder are copied into execute node.
+
+For ex.:
+mProject => x86 /usr/bin -> wf-scratch <- pegasus-run copy to -> rpi /var/lib/condor/execute/
+so x86 needs arm montage binaries during execution for the workflow to work.
+pegasus-kickstart => x86 run00x/arm.tar.gz ,_ pegasus-run copy to -> rpi /var/lib/condor/execute/ -> unzip -> set it to PATH and use pegasus-kickstart from there
+
+++++++++++++++++++++++++++++++++

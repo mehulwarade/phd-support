@@ -1,0 +1,142 @@
+** Installing HTcondor - Ulyana - Automatic - Use this
+
+sudo apt install htcondor
+sudo dpkg-reconfigure htcondor
+
+Central Manager:
+    Leave everything blank apart from following.
+        Choose all three - submission, execution, central manager
+        Address of the central manager: 192.168.5.10
+        Machines with write access to this host: 192.168.5.*
+
+Rpi Nodes:
+    Leave everything blank apart from following.
+        Choose all three - execution
+        Address of the central manager: 192.168.5.10
+        Machines with write access to this host: 192.168.5.*
+
+Copy the "condor_config.local" file in "/etc/condor/condor_config.local" for both nuc and rpi.
+
+Turn on condor on nuc and then rpi: "sudo condor_master". 
+Check status: "condor_status". You should see the resources available on nuc.
+
+
+
+** Installing HTcondor - UMA - Manual - OLD - Not Working
+
+REF:https://htcondor.readthedocs.io/en/latest/getting-htcondor/install-linux-as-user.html
+Source Tarball Link: https://research.cs.wisc.edu/htcondor/tarball/
+Tested with: https://research.cs.wisc.edu/htcondor/tarball/current/current/condor-x86_64_Debian10-stripped.tar.gz
+
+curl https://research.cs.wisc.edu/htcondor/tarball/current/current/condor-x86_64_Debian10-stripped.tar.gz --output condor
+
+1. After downloding, unpack the tat.gz file:
+    tar -x -f file_name.tar.gz
+
+2. Rename the long folder to a shorter version:
+    mv condor-*stripped condor
+
+3. Configure condor:
+    cd condor
+    ./bin/make-personal-from-tarball
+
+4. Source the condor /bin folder
+    . /path-to-condor/condor.sh
+
+5. Test installation:
+    condor_q
+    condor_status
+
+6. All the logs and configuration files are stored in the same folder.
+    Config: condor_config_val -config
+    Log:   condor_folder/local/Log
+
+7. condor useful commands:
+    condor_q
+    condor_q -analyze
+    condor_status
+    condor_config_val -config
+    condor_submit_dag xxx
+    pstree | grep condor
+
+
+
+** TIPS:
+* Sourcing all the important foders:
+export CONDOR_CONFIG=/home/mehul/source_folder/condor_source/etc/condor_config
+export PATH=/home/mehul/source_folder/condor_source/bin:$PATH
+export PATH=/home/mehul/source_folder/condor_source/sbin:$PATH
+export PATH=/home/mehul/source_folder/pegasus_source/bin:$PATH
+export PATH=/home/mehul/source_folder/x86-montage-binaries:$PATH
+
+
+** ERROR:
+
+* MasterLog : error opening watchdog pipe /var/run/condor/procd_pipe.watchdog: No such file or directory :
+
+sudo mkdir -p /run/condor && sudo chown condor:condor /run/condor
+sudo mkdir -p /var/run/condor && sudo chown condor:condor /var/run/condor
+
+
+
+
+
+######################################################
+/etc/condor/condor_config.local -> file
+######################################################
+
+######## MAIN ##############
+
+DAEMON_LIST = MASTER, STARTD
+CONDOR_HOST = 192.168.5.10
+ALLOW_WRITE = $(CONDOR_HOST) $(IP_ADDRESS) 127.* 192.168.5.*
+
+######## FULL ##############
+
+# HTCondor configuration file
+#
+# Configuration placed into this file extends/overwrites the settings in the
+# main HTCondor configuration at /etc/condor/condor_config.
+# It may be advantagous to leave the main configuration file pristine and put
+# local configuration here to ease configuration updates during upgrades of the
+# HTCondor Debian package. Alternatively, it is also possible to place additional
+# configuration files into /etc/condor/config.d that will take precedence over
+# both the main configuration file and this local configuration. Note that
+# DebConf-generated configuration will overwrite settings in this file.
+
+# For central manager
+DAEMON_LIST = COLLECTOR, STARTD, MASTER, NEGOTIATOR, SCHEDD
+CONDOR_HOST = 192.168.5.10
+ALLOW_READ = $(CONDOR_HOST) $(IP_ADDRESS) 127.* 192.168.*
+ALLOW_WRITE = $(CONDOR_HOST) $(IP_ADDRESS) 127.* 192.168.*
+ALLOW_NEGOTIATOR = $(CONDOR_HOST) $(IP_ADDRESS) 127.* 192.168.*
+ALLOW_NEGOTIATOR_SCHEDD = 192.168.*
+ALLOW_ADMINISTRATOR = $(CONDOR_HOST) $(IP_ADDRESS) 192.168.5.10
+
+
+# For rpi
+DAEMON_LIST = MASTER, STARTD
+CONDOR_HOST = 192.168.5.10
+ALLOW_READ = $(CONDOR_HOST) $(IP_ADDRESS) 127.* 192.168.*
+ALLOW_WRITE = $(CONDOR_HOST) $(IP_ADDRESS) 127.* 192.168.*
+ALLOW_NEGOTIATOR = $(CONDOR_HOST) $(IP_ADDRESS) 127.* 192.168.*
+ALLOW_NEGOTIATOR_SCHEDD = 192.168.*
+ALLOW_ADMINISTRATOR = 192.168.5.10
+
+
+
+#https://www-auth.cs.wisc.edu/lists/htcondor-users/2014-March/msg00013.shtml
+#SLOT1_USER = mehul
+#SLOT2_USER = mehul
+#SLOT3_USER = mehul
+#SLOT4_USER = mehul
+
+#STARTER_ALLOW_RUNAS_OWNER = False
+
+#EXECUTE = /home/mehul/condor_test
+
+#doesn't work≈
+#SCHEDD.ALLOW_READ = condor
+#SCHEDD.ALLOW_WRITE = condor
+
+#NUM_SLOTS = 0

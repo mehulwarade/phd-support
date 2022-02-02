@@ -1,0 +1,54 @@
+** Installing Pegasus - Ulyana - Automatic - Use this
+
+1.Ref: https://unix.stackexchange.com/a/159114
+2.Ref: https://pegasus.isi.edu/documentation/user-guide/installation.html <- Does not work with /etc/sources
+
+Get the deb binary file to install pegasus:
+    wget https://download.pegasus.isi.edu/pegasus/ubuntu/dists/bionic/main/binary-amd64/pegasus_5.0.1-1+ubuntu18_amd64.deb
+
+Dependencies Install:
+    apt - graphviz
+    apt - python3-openssl
+    apt - python3-git
+
+*** Error: Pegasus unmet dependencies. Unconfigured. See 1.REF up:
+    sudo dpkg -r pegasus <- Remove unconfigured pegasus
+    Install the required dependencies.
+    Again install using dpkg
+        dpkg -i ./pegasus_5.0.1-1+ubuntu18_amd64.deb
+
+*** Set environmental variables:
+    sudo nano ~/.bashrc
+        export PYTHONPATH=`pegasus-config --python`
+        export PERL5LIB=`pegasus-config --perl`
+        export CLASSPATH=`pegasus-config --classpath`
+
+
+** Installing Pegasus - UMA OS - Manual - OLD
+    
+    REF: https://pegasus.isi.edu/documentation/user-guide/installation.html
+    Source Tarball Link (Get Debian 11 tar.gz package): https://pegasus.isi.edu/downloads/
+    Download Link for Debian 11 tarball: http://download.pegasus.isi.edu/pegasus/5.0.1/pegasus-binary-5.0.1-x86_64_deb_11.tar.gz 
+    Tested with the above link.
+
+    ** curl http://download.pegasus.isi.edu/pegasus/5.0.1/pegasus-binary-5.0.1-x86_64_deb_11.tar.gz --output pegasus.tar.gz
+
+    1. After downloading, unpack the file:
+        tar zxf filename.tar.gz
+
+    2. Install predependencies:
+        sudo apt install python3-git
+        sudo apt install python3-yaml
+
+    2. Adding to path:
+        export PATH=/path/to/pegasus-install/bin:$PATH
+
+    3. Check that pegasus works:
+        pegasus-config -V
+        pegasus-config --bin
+
+    4. If generating a workflow, we need to set the libraris:
+        export PYTHONPATH=`pegasus-config --python`
+        export PERL5LIB=`pegasus-config --perl`
+        export CLASSPATH=`pegasus-config --classpath`
+

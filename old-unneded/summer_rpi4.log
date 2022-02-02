@@ -1,0 +1,67 @@
+#switch
+
+1 192.168.1.99
+38:94:ED:A9:61:72
+
+2 192.168.1.100
+bc:a5:11:26:ea:c4
+
+#node
+1 192.168.1.161
+dc:a6:32:c1:a8:02 
+dc-a6-32-c1-a8-02 
+
+2 192.168.1.162
+dc:a6:32:af:b6:97
+dc-a6-32-af-b6-97
+
+3 192.168.1.163
+dc:a6:32:c1:a7:7a
+dc-a6-32-c1-a7-7a
+
+4 192.168.1.164
+dc:a6:32:c1:a8:73
+dc-a6-32-c1-a8-73
+
+5 192.168.1.165
+dc:a6:32:c1:a8:07
+dc-a6-32-c1-a8-07
+
+6 192.168.1.166
+dc:a6:32:c1:a8:1f
+dc-a6-32-c1-a8-1f
+
+7 192.168.1.167
+dc:a6:32:c1:a8:4c
+dc-a6-32-c1-a8-4c
+
+8 192.168.1.168
+dc:a6:32:c1:a8:1c
+dc-a6-32-c1-a8-1c
+
+9 192.168.1.169
+dc:a6:32:c1:a8:3a
+dc-a6-32-c1-a8-3a
+
+10 192.168.1.170
+dc:a6:32:c1:a8:28
+dc-a6-32-c1-a8-28
+
+11 192.168.1.171
+dc:a6:32:c1:a7:56
+dc-a6-32-c1-a7-56
+
+12 192.168.1.172
+dc:a6:32:c1:a7:59
+dc-a6-32-c1-a7-59
+
+
+STEPS TO RUN MONTAGE WORKFLOW
+
+
+##### Node setup
+
+sudo mkdir -p /usr/share/pegasus/sh/
+
+[On x86] sudo scp /usr/share/pegasus/sh/* [NODE_IP]:/usr/share/pegasus/sh/
+[On x86] sudo cp ~/arm-montage-binaries/* /nfs4/nodeXX/usr/bin/

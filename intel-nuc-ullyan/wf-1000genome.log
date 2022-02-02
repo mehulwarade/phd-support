@@ -1,0 +1,109 @@
+** Delete - submit files (26 for -i 10): ,/home/mehul/shared_fs/genome-test/1000-genome-1643320683/pegasus-worker-5.0.1-x86_64_ubuntu_18.tar.gz
+
+** Find:
+should_transfer_files = YES
+
+** Replace:
+should_transfer_files = YES
+Requirements = Memory >= 32 && Arch =="armv7l"
+
+** Find:
+printf "\n########################[Pegasus Lite] Setting up workdir ########################\n"  1>&2
+# work dir
+export pegasus_lite_work_dir=$PWD
+pegasus_lite_setup_work_dir
+
+printf "\n##############[Pegasus Lite] Figuring out the worker package to use ##############\n"  1>&2
+# figure out the worker package to use
+pegasus_lite_worker_package
+
+pegasus_lite_section_start stage_in
+
+** Replace:
+# printf "\n########################[Pegasus Lite] Setting up workdir ########################\n"  1>&2
+# # work dir
+# export pegasus_lite_work_dir=$PWD
+# pegasus_lite_setup_work_dir
+
+# printf "\n##############[Pegasus Lite] Figuring out the worker package to use ##############\n"  1>&2
+# # figure out the worker package to use
+# pegasus_lite_worker_package
+
+# pegasus_lite_section_start stage_in
+
+** Find:
+printf "\n##################### Checking file integrity for input files #####################\n"  1>&2
+
+** Replace:
+#printf "\n##################### Checking file integrity for input files #####################\n"  1>&2
+
+** Find - Regex:
+# do file integrity checks
+pegasus-integrity --print-timings --verify=stdin 1>&2 << 'eof'
+(.+?)
+eof
+
+** Replace - Regex:
+# # do file integrity checks
+# pegasus-integrity --print-timings --verify=stdin 1>&2 << 'eof'
+# $1
+# eof
+
+** Find:
+pegasus_lite_section_end stage_in
+set +e
+job_ec=0
+
+** Replace:
+#pegasus_lite_section_end stage_in
+#set +e
+#job_ec=0
+
+
+
+
+
+
+
+
+
+GITHUB: https://github.com/pegasus-isi/1000genome-workflow
+https://github.com/rosafilgueira/Mutation_Sets
+
+Population code: ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/README_populations.md
+
+
+Experiment completed:
+1 chromosome with 250000 lines broken down into 10 parts.
+Time to complete (Intel NUC only) -> 3.4 hours
+OUTPUT: 7 different tar.gz files for each population.
+
+Jobs (Check GitHub for each job description):
+1 create dir
+5 stage_in_remote_local
+4 stage_in_local_local
+1 sifting
+10 individuals (parallel. controlled by -i parameter. Each thread will get 250000/i lines to process)
+1 individuals_merge
+7 frequency (parallel)
+7 mutation_overlap
+2 stage_out_local_local
+1 cleanup
+
+Issues:
+1. Huge amount of data needs to be transferred. 250000 line vcf file is transferred to each thread while the command only makes use of a small part of it. (each thread -> "./individuals ALL.chr1.250000.vcf 1 1 25001 250000" <- parameters (1. filename 2. --- 3. start_of_line 4. end_of_line 5. total_lines))
+2. The "condor_status" does not show the resources being used, it's weird as condor does not submit jobs according to the available resources (eg. I have 8 threads but condor submitted all the 10 jobs at the same time and all were executing simultaneously  leading to context switching a lot.)
+3. The binaries for individuals or sifting jobs are compiled for x86 Linux and don't know if it will work on arm. Will need to recompile them from the source if it doesn't.
+4. 
+
+Improvements (what we can do):
+1. Slicing the vcf file into smaller chunks so as to transfer to each node. (We can do this in pre-processing stage and change the transfer-file-name in the submit file). This can be done via code - SCHEDULER PART 1
+
+2. Changing the priorities of the jobs so that they actually do not get submitted altogether and avoid context switching - SCHEDULER PART 2
+
+Parameters that can be tweaked:
+1. Number of chromosomes (max 10 - each 250000 lines).
+2. Number of parts per chromosome. (Keeping in mind each part will need the whole vcf file considering not implementing the slicing.)
+
+To Do:
+1. Execute the workflow on condor-pool (Rpi).

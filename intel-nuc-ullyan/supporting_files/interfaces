@@ -1,0 +1,21 @@
+###############################################
+##### Networking file to set up static IP #####
+#sudo nano /etc/network/interfaces
+###############################################
+
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+auto lo
+iface lo inet loopback
+
+auto enp89s0
+    allow-hotplug enp89s0
+    iface enp89s0 inet static
+            address 192.168.5.10
+            gateway 192.168.1.1
+
+auto enx00249b6cf06b
+    allow-hotplug enx00249b6cf06b
+    iface enx00249b6cf06b inet dhcp

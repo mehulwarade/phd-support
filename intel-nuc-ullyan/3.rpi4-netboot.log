@@ -1,0 +1,51 @@
+######################################################
+RPi4 Edit Bootloader for Network Boot
+######################################################
+
+REF: https://linuxhit.com/raspberry-pi-pxe-boot-netbooting-a-pi-4-without-an-sd-card/#6-assumptions
+REF: https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
+
+    sudo apt-get update
+    sudo apt-get full-upgrade
+    sudo apt-get install rpi-eeprom
+    vcgencmd bootloader_config
+
+        ERROR:  VCHI initialization failed
+        REF: https://chewett.co.uk/blog/258/vchi-initialization-failed-raspberry-pi-fixed/
+
+        sudo usermod -aG video <username>
+        EG: sudo usermod -aG video mehul
+
+        Logout of the current terminal and log back in
+        The command should work now.
+
+# Enter root so no permission issue
+    su
+    cd /lib/firmware/raspberrypi/bootloader/beta/
+
+# Make a copy of the latest firmware image file. In my case it was pieeprom-2019-11-18.bin:
+    cp pieeprom-2021-11-18.bin new-pieeprom.bin
+
+# Extract the config from the eeprom image
+    rpi-eeprom-config new-pieeprom.bin > bootconf.txt
+
+# Adding BOOT order at the end of the file
+    nano bootconf.txt
+    >>>>>>>>>>>>>>>>>>>
+        BOOT_UART=0
+        .
+        .
+        BOOT_ORDER=0x2
+    >>>>>>>>>>>>>>>>>>>
+
+# Now save the new bootconf.txt file to the firmware image we copied earlier:
+    rpi-eeprom-config --out netboot-pieeprom.bin --config bootconf.txt new-pieeprom.bin
+
+# Now install the new boot loader:
+    rpi-eeprom-update -d -f ./netboot-pieeprom.bin
+
+# Reboot and check using the vcgencmd
+    vcgencmd bootloader_config
+
+cd /lib/firmware/raspberrypi/bootloader/beta/
+rpi-eeprom-update -d -f ./netboot-pieeprom.bin
