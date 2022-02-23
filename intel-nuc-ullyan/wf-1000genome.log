@@ -1,3 +1,6 @@
+./daxgen.py -e condorpool -i 50
+
+
 ** Delete - submit files (26 for -i 10): ,/home/mehul/shared_fs/genome-test/1000-genome-1643320683/pegasus-worker-5.0.1-x86_64_ubuntu_18.tar.gz
 
 ** Find:
@@ -65,8 +68,6 @@ job_ec=0
 
 
 
-
-
 GITHUB: https://github.com/pegasus-isi/1000genome-workflow
 https://github.com/rosafilgueira/Mutation_Sets
 
@@ -107,3 +108,11 @@ Parameters that can be tweaked:
 
 To Do:
 1. Execute the workflow on condor-pool (Rpi).
+
+
+
+
+Executions:
+Date        Nodes   Workflow parameters     myswl_table         timestamp-start     timestamp-stop
+07.02.2022  12      300mb -> 30000/ -i 50   1c_30000_12n_i50    1644214413          1644219862
+07.02.2022  6       300mb -> 3000/ -i 50    1c_30000_6n_i50     1644232914          1644238148

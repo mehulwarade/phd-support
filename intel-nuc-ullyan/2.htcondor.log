@@ -77,7 +77,8 @@ export PATH=/home/mehul/source_folder/x86-montage-binaries:$PATH
 sudo mkdir -p /run/condor && sudo chown condor:condor /run/condor
 sudo mkdir -p /var/run/condor && sudo chown condor:condor /var/run/condor
 
-
+* Running condor master on a particular node
+ssh -t node4 "echo mcs | ./shared_fs/master.sh"
 
 
 

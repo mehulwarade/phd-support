@@ -50,6 +50,7 @@ apt install logrotate
 apt install nodejs
 apt install npm
 
+apt install snmpd snmp
 
 1. Edit the interfaces file to set up static IP address.
 2. Copy "dnsmasq.conf" and "ethers"
@@ -79,6 +80,7 @@ apt install npm
 
 11. Setup Montage -> See wf-montage.log
 
+12. Setup Genome woprkflow -> See wf-1000genome.log
 
 
 ************
@@ -319,3 +321,35 @@ eg.: echo mcs | sudo -S cho a
 
 Ref: https://how-to.fandom.com/wiki/How_to_set_up_a_NAT_router_on_a_Linux-based_computer
 
+Setup:
+
+Machine A (nuc):
+    Adapter1: enp89s0           - 192.168.5.10
+    Adapter2: enx00249b6cf06b   - 192.168.1.105
+
+Machine B (rpi4):
+    eth0 - 192.168.5.xx
+
+We want to access internet on 'Machine B - eth0' via 'Machine A - enp89s0'
+
+1. test connection to rpi4 from nuc
+    on nuc: ping 192.168.5.101
+
+2. test connection to nuc from rpi4
+    on rpi4: ping 192.168.5.10
+
+3. Configure Rpi for NAT
+    Check 'route' on rpi4. This should already be addded. If not then do the following:
+    on rpi4: route add default gw 192.168.5.10
+
+4. Configure nuc for NAT:
+
+Edit this manually as this requires root access:
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+
+Copy the following:
+    sudo modprobe iptable_nat 
+    sudo iptables -t nat -A POSTROUTING -o enx00249b6cf06b -j MASQUERADE
+    sudo iptables -A FORWARD -i enp89s0 -j ACCEPT
+
+That's it. Rpi should have internet access.
