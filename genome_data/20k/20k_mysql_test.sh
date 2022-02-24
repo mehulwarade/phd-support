@@ -20,7 +20,7 @@ do
 		for time in $(seq $start $end); 
 		do 
 			echo "File: " $jobstate_file " Time executed: " $time
-			#mysql -u root -pz 20k_genome -ss -e "select * from $mysql_table where timestamp = $time" >> ../output/$workflow_size/"$mysql_table"".csv"
+			mysql -u root -pz phd -ss -e "select * from $mysql_table where timestamp = $time" >> output/$workflow_size/"$mysql_table"".csv"
 		done
 		
 		echo 'End Processing: ' $index_node'n_i'$workflow_size'_20k-jobstate.log'
