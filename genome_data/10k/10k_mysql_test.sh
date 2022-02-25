@@ -5,7 +5,7 @@ do
 	mkdir output
 	mkdir output/$workflow_size
 	cd $workflow_size
-
+	echo ====================================== >> runtime.log
 	for index_node in $(seq 1 12); 
 	do
 
@@ -17,6 +17,9 @@ do
 		# echo 'size: ' $workflow_size ' nodes: ' $index_node
 		start=$(awk '{print $1}' $jobstate_file | head -n 1)
     	end=$(awk '{print $1}' $jobstate_file | tail -n 1)
+
+		
+		echo $jobstate_file $( expr $end - $start )  >> runtime.log
 
 		for time in $(seq $start $end); 
 		do 
