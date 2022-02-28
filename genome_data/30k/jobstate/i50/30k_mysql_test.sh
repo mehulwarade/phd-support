@@ -10,8 +10,8 @@ do
 	for index_node in $(seq 1 12); 
 	do
 
-		jobstate_file=$index_node'n_i'$workflow_size'_20k-jobstate.log'
-		mysql_table=$index_node'n_i'$workflow_size'_20k'
+		jobstate_file=$index_node'n-300mb-i'$workflow_size'-jobstate.log'
+		mysql_table=$index_node'n_300mb_i'$workflow_size
 
 		echo 'Processing: ' $jobstate_file ' using table: ' $mysql_table
 
@@ -61,12 +61,13 @@ do
 		else
 		echo haha
 		fi
+		# echo Command: select avg(p1+p2+p3+p4+p5+p6+p9+p10+p11+p12+p13+p14) 
 
-		for time in $(seq $start $end); 
-		do 
-			echo "File: " $jobstate_file " Time executed: " $time
-			mysql -u root -pz phd -ss -e "select * from $mysql_table where timestamp = $time" >> output/$workflow_size/"$mysql_table"".csv"
-		done
+		# for time in $(seq $start $end); 
+		# do 
+		# 	echo "File: " $jobstate_file " Time executed: " $time
+		# 	mysql -u root -pz phd -ss -e "select * from $mysql_table where timestamp = $time" >> output/$workflow_size/"$mysql_table"".csv"
+		# done
 		
 		echo 'End Processing: ' $index_node'n_i'$workflow_size'_20k-jobstate.log'
 	done

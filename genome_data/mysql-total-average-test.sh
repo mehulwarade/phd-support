@@ -9,4 +9,6 @@ mysql -u root -pz phd -ss -e "select timestamp,description,p1,p2,p3,p4,p5,p6,p7,
 # Get the average of the column
 
 
-select sum(p1+p2+p3+p4+p5+p6+p8+p9+p10+p11+p12+p13+p14) AS TOTAL FROM teest;
+select sum(p1+p2+p3+p4+p5+p6+p9+p10+p11+p12+p13+p14) AS TOTAL FROM teest;
+
+select avg(p1+p2+p3) AS TOTAL FROM 3n_300mb_i75 where timestamp between 1644625451 and 1644637835;
