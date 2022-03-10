@@ -1,3 +1,6 @@
+import delimited "/Users/mwarade/Desktop/phd-support/STATA/mehul-genome/6n_i50_30k/output/6-allPerTimePerNode5-output.csv"
+
+
 
 twoway (line totaljobs time if nodeid == 1) (line totaljobs time if nodeid == 2) (line totaljobs time if nodeid == 3) (line totaljobs time if nodeid == 4) (line totaljobs time if nodeid == 5) (line totaljobs time if nodeid == 6)
 
@@ -11,9 +14,12 @@ twoway (scatter nodeid time if totaljobs == 1)(scatter nodeid time if totaljobs 
 Second y axis Ref: https://www.statalist.org/forums/forum/general-stata-discussion/general/1407269-difficulty-displaying-title-on-second-y-axis-with-by-option
 
 Final done for the dotted graphs: figure 9:
-twoway (scatter nodeid time if totaljobs == 1  & nodeid != -1)(scatter nodeid time if totaljobs == 2 & nodeid != -1)(scatter nodeid time if totaljobs == 3 & nodeid != -1)(scatter nodeid time if totaljobs == 4 & nodeid != -1), ytitle(Node ID) xtitle(Time (seconds)) title(Genome Workflow) subtitle(20k data and 6 nodes) legend( label (1 "1 Active Thread") label (2 "2 Active Thread") label (3 "3 Active Thread") label (4 "4 Active Thread"))
+twoway (scatter nodeid time if totaljobs == 1  & nodeid != -1)(scatter nodeid time if totaljobs == 2 & nodeid != -1)(scatter nodeid time if totaljobs == 3 & nodeid != -1)(scatter nodeid time if totaljobs == 4 & nodeid != -1), ytitle(Node ID) xtitle(Time (seconds)) title(Genome Workflow) subtitle(30k data - 12 nodes - 50 jobs) legend( label (1 "1 Active Thread") label (2 "2 Active Thread") label (3 "3 Active Thread") label (4 "4 Active Thread"))
 
 Ref: https://wlm.userweb.mwn.de/Stata/wstatgti.htm
 
 figure 13 done final:
 twoway (line energy time if nodeid == -1)(line individuals time if nodeid == -1, yaxis(2))(line sifting time if nodeid == -1, yaxis(2))(line individuals_merge time if nodeid == -1, yaxis(2))(line frequency time if nodeid == -1, yaxis(2))(line mutation_overlap time if nodeid == -1, yaxis(2)), ytitle(Energy (Watt)) r1title(Number of Tasks) xtitle(Time (seconds)) title(Genome Workflow - 20k data and 6 nodes) subtitle(Energy and Number of Tasks vs Time)
+
+
+

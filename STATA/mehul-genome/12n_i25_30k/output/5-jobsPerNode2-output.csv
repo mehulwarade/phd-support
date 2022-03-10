@@ -1,0 +1,51 @@
+NodeIP,NodeID,frequency,individuals,individuals_merge,mutation_overlap,sifting
+192.168.5.10,0, 0, 0, 0, 0, 0
+192.168.5.103,1, 3, 4, 1, 1, 0
+192.168.5.104,2, 0, 4, 0, 0, 0
+192.168.5.107,3, 0, 4, 0, 0, 0
+192.168.5.108,4, 1, 4, 0, 3, 0
+192.168.5.109,5, 0, 1, 0, 0, 1
+192.168.5.111,6, 1, 4, 0, 1, 0
+192.168.5.112,7, 2, 4, 0, 2, 0
+
+NodeIP, JobType, Count
+192.168.5.10,frequency,0
+192.168.5.10,individuals,0
+192.168.5.10,individuals_merge,0
+192.168.5.10,mutation_overlap,0
+192.168.5.10,sifting,0
+192.168.5.103,frequency,3
+192.168.5.103,individuals,4
+192.168.5.103,individuals_merge,1
+192.168.5.103,mutation_overlap,1
+192.168.5.103,sifting,0
+192.168.5.104,frequency,0
+192.168.5.104,individuals,4
+192.168.5.104,individuals_merge,0
+192.168.5.104,mutation_overlap,0
+192.168.5.104,sifting,0
+192.168.5.107,frequency,0
+192.168.5.107,individuals,4
+192.168.5.107,individuals_merge,0
+192.168.5.107,mutation_overlap,0
+192.168.5.107,sifting,0
+192.168.5.108,frequency,1
+192.168.5.108,individuals,4
+192.168.5.108,individuals_merge,0
+192.168.5.108,mutation_overlap,3
+192.168.5.108,sifting,0
+192.168.5.109,frequency,0
+192.168.5.109,individuals,1
+192.168.5.109,individuals_merge,0
+192.168.5.109,mutation_overlap,0
+192.168.5.109,sifting,1
+192.168.5.111,frequency,1
+192.168.5.111,individuals,4
+192.168.5.111,individuals_merge,0
+192.168.5.111,mutation_overlap,1
+192.168.5.111,sifting,0
+192.168.5.112,frequency,2
+192.168.5.112,individuals,4
+192.168.5.112,individuals_merge,0
+192.168.5.112,mutation_overlap,2
+192.168.5.112,sifting,0
