@@ -1,4 +1,13 @@
-import delimited "/Users/mwarade/Desktop/phd-support/STATA/mehul-genome/6n_i50_30k/output/6-allPerTimePerNode5-output.csv"
+
+[12:07 pm] MEHUL WARADE
+They asked for new figures
+
+(comma should be added within more than 4 digits, such as 10000 should be 10,000, please modify. following as the same.)
+
+https://kb.iu.edu/d/axqn
+
+
+import delimited "/Users/mwarade/Desktop/phd-support/STATA/mehul-genome/6n_i50_20k/output/6-allPerTimePerNode5-output.csv"
 
 import delimited "/Users/mwarade/Desktop/phd-support/STATA/genome/30k_i50_full.csv", clear
 
@@ -32,12 +41,12 @@ twoway (connected time numberofindividualjob) (connected energy numberofindividu
 
 # Dotted graph: 6/output/6-allPerTimePerNode5-output.csv
 # Bioinformatics - nodeid vs time - 6n - 20k
-twoway (scatter nodeid time if totaljobs == 1  & nodeid != -1)(scatter nodeid time if totaljobs == 2 & nodeid != -1)(scatter nodeid time if totaljobs == 3 & nodeid != -1)(scatter nodeid time if totaljobs == 4 & nodeid != -1), ytitle(Node ID) xtitle(Time (seconds)) title(Bioinformatics Workflow) subtitle(20k data - 6 nodes - 50 jobs) legend( label (1 "1 Active Thread") label (2 "2 Active Thread") label (3 "3 Active Thread") label (4 "4 Active Thread"))
+twoway (scatter nodeid time if totaljobs == 1  & nodeid != -1)(scatter nodeid time if totaljobs == 2 & nodeid != -1)(scatter nodeid time if totaljobs == 3 & nodeid != -1)(scatter nodeid time if totaljobs == 4 & nodeid != -1), ytitle(Node ID) xtitle(Time (seconds)) title(Bioinformatics Workflow) subtitle(20k data - 6 nodes - 50 jobs) legend( label (1 "1 Active Thread") label (2 "2 Active Threads") label (3 "3 Active Threads") label (4 "4 Active Threads"))
 # manually changed the size of dots to v-small
 
 # Dotted graph: 1-6n-detail.csv
 # Montage - nodeid vs time - 6n
-twoway (scatter nodeid time if totaljobs == 1  & nodeid != -1)(scatter nodeid time if totaljobs == 2 & nodeid != -1)(scatter nodeid time if totaljobs == 3 & nodeid != -1)(scatter nodeid time if totaljobs == 4 & nodeid != -1), ytitle(Node ID) xtitle(Time (seconds)) title(Montage Workflow) subtitle(1 degree - 6 nodes) legend( label (1 "1 Active Thread") label (2 "2 Active Thread") label (3 "3 Active Thread") label (4 "4 Active Thread"))
+twoway (scatter nodeid time if totaljobs == 1  & nodeid != -1)(scatter nodeid time if totaljobs == 2 & nodeid != -1)(scatter nodeid time if totaljobs == 3 & nodeid != -1)(scatter nodeid time if totaljobs == 4 & nodeid != -1), ytitle(Node ID) xtitle(Time (seconds)) title(Montage Workflow) subtitle(1 degree - 6 nodes) legend( label (1 "1 Active Thread") label (2 "2 Active Threads") label (3 "3 Active Threads") label (4 "4 Active Threads"))
 # manually changed the size of dots to v-small
 
 Ref: https://wlm.userweb.mwn.de/Stata/wstatgti.htm
